@@ -1,12 +1,10 @@
 import { Sequelize } from 'sequelize'
 import * as dotenv from 'dotenv'
-import * as pg from 'pg'
 dotenv.config()
 
 console.log(process.env.dburi);
 const sequelize = new Sequelize(process.env.dburi,{
-  logging: false,
-  dialectModule: pg
+  logging: false
 })
 
 async function verifyConnection()
