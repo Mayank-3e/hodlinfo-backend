@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
+console.log(process.env.POSTGRES_DATABASE);
 const sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USER, process.env.PASSWORD,
 {
   host: process.env.POSTGRES_HOST,
