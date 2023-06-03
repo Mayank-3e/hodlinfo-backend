@@ -1,12 +1,14 @@
 import { Sequelize } from 'sequelize'
 import * as dotenv from 'dotenv'
+import * as pg from 'pg'
 dotenv.config()
 
-console.log(process.env.POSTGRES_DATABASE);
+console.log(process.env.POSTGRES_USER);
 const sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USER, process.env.PASSWORD,
 {
   host: process.env.POSTGRES_HOST,
-  dialect: 'postgres'
+  dialect: 'postgres',
+  dialectModule: pg
 });
 
 async function verifyConnection()
