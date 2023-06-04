@@ -6,7 +6,9 @@ import axios from 'axios';
 const app = express();
 const PORT = 4000;
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'https://hodlinfo-frontend-gamma.vercel.app'
+}))
 
 app.get('/', async(req,res)=>
 {
