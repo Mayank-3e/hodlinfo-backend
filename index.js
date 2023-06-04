@@ -58,4 +58,8 @@ app.get('/', async(req,res)=>
   res.json({data})
 })
 
-app.listen(process.env.PORT,()=>'app running on port '+process.env.PORT)
+app.listen(process.env.PORT, e =>
+{
+  if(e) console.log("Error in server setup");
+  else console.log("Server listening on Port",process.env.PORT);
+})
