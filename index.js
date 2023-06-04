@@ -1,30 +1,31 @@
 import express from 'express'
-import serverless from 'serverless-http'
 import Stock from './models.js';
 import cors from 'cors'
 
 const app = express();
-const router=express.Router()
 const PORT = 4000;
-router.use(express.json())
-router.use(cors())
+app.use(express.json())
+app.use(cors())
 
-router.get('/', async(req,res)=>
+app.get('/', async(req,res)=>
 {
   try { await Stock.destroy({truncate: true}); }
-  catch(e) {return res.json({err: 'Error emptying database.'})}
+  catch(e) {return res.json({err: 'Error emptying db.'})}
 
   let currencies
   try
   {
-    currencies=await fetch('https://api.wazirx.com/api/v2/tickers/',
+    currencies=await fetch('https://api.wazirx.com/api/v2/ticker/',
     {
       headers: {'Content-Type':'application/json'}
     })
     currencies=await currencies.json()
   }
   catch (e)
-  {return res.json({err: 'Error in fetching from API.'})}
+  {
+    console.log(e);
+    return res.json({err: 'Error in fetching from API.'})
+  }
 
   const keys=Object.keys(currencies).slice(0,10)
   let data=[]
@@ -55,5 +56,4 @@ router.get('/', async(req,res)=>
   res.json({data})
 })
 
-app.use('/.netlify/functions/index',router)
-export default serverless(app)
+app.listen(PORT,()=>'app running on port '+PORT)
