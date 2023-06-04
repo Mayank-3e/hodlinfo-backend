@@ -1,6 +1,7 @@
 import express from 'express'
 import Stock from './models.js';
 import cors from 'cors'
+import axios from 'axios';
 
 const app = express();
 const PORT = 4000;
@@ -9,17 +10,18 @@ app.use(cors())
 
 app.get('/', async(req,res)=>
 {
-  try { await Stock.destroy({truncate: true}); }
-  catch(e) {return res.json({err: 'Error emptying db.'})}
+  try { await Stock.sync({force: true}) }
+  catch(e)
+  {
+    console.log(e);
+    return res.json({err: 'Error emptying db.'})
+  }
 
   let currencies
   try
   {
-    currencies=await fetch('https://api.wazirx.com/api/v2/ticker/',
-    {
-      headers: {'Content-Type':'application/json'}
-    })
-    currencies=await currencies.json()
+    currencies=await axios.get('https://api.wazirx.com/api/v2/tickers/')
+    currencies=currencies.data
   }
   catch (e)
   {
