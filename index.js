@@ -4,6 +4,7 @@ import cors from 'cors'
 import axios from 'axios';
 
 const app = express();
+console.log(process.env.PORT)
 const PORT = 4000;
 app.use(express.json())
 app.use(cors())
