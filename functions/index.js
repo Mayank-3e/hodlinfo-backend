@@ -1,13 +1,15 @@
 import express from 'express'
+import serverless from 'serverless-http'
 import Stock from './models.js';
 import cors from 'cors'
 
 const app = express();
+const router=express.Router()
 const PORT = 4000;
-app.use(express.json())
-app.use(cors())
+router.use(express.json())
+router.use(cors())
 
-app.get('/', async(req,res)=>
+router.get('/', async(req,res)=>
 {
   try { await Stock.destroy({truncate: true}); }
   catch(e) {return res.json({err: 'Error emptying database.'})}
@@ -53,10 +55,5 @@ app.get('/', async(req,res)=>
   res.json({data})
 })
 
-app.listen(PORT, (error) =>
-{
-  if(!error)
-    console.log("Server is Successfully Running,and App is listening on port "+ PORT)
-  else 
-    console.log("Error occurred, server can't start", error);
-});
+app.use('/.netlify/functions/index',router)
+export default serverless(app)
